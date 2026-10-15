@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { scrollSmoothed } from "@/lib/scroll";
+import { assetPath } from "@/lib/basePath";
 import { computeTimeline, damp } from "./timeline";
 import { prefersReducedMotion } from "./env";
 import { machineRig } from "./machineRig";
@@ -16,7 +17,7 @@ import {
 } from "./materials";
 import { splitComponents } from "./machineParts";
 
-export const MACHINE_GLB_URL = "/models/Coffee_Machine_NOIR.glb";
+export const MACHINE_GLB_URL = assetPath("/models/Coffee_Machine_NOIR.glb");
 
 /**
  * Target world height for the imported machine. The GLB ships in arbitrary

@@ -6,6 +6,7 @@ import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { scrollSmoothed } from "@/lib/scroll";
 import { getSignature } from "@/lib/signature";
+import { assetPath } from "@/lib/basePath";
 import { useExperienceStore } from "@/store/experience";
 import { computeTimeline, damp } from "./timeline";
 import { prefersReducedMotion } from "./env";
@@ -42,7 +43,7 @@ const DRINK_LOOK: Record<string, { liquid: string; crema: string; cremaAmount: n
 
 export function CoffeeCup() {
   const tex = useNoirTextures();
-  const { scene: cupScene } = useGLTF("/models/Cup_NOIR.glb");
+  const { scene: cupScene } = useGLTF(assetPath("/models/Cup_NOIR.glb"));
 
   // World-space plane that clips the coffee body to the current fill level.
   const clipPlane = useMemo(

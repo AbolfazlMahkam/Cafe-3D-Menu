@@ -47,7 +47,7 @@ const faDisplay = Noto_Kufi_Arabic({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://noir-coffee.example"),
+  metadataBase: new URL("https://abolfazlmahkam.github.io/Cafe-3D-Menu"),
   title: {
     default: "نوآر — قهوه، فراتر از معمول",
     template: "%s · NOIR",

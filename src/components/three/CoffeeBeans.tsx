@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { scrollSmoothed } from "@/lib/scroll";
+import { assetPath } from "@/lib/basePath";
 import { computeTimeline, damp } from "./timeline";
 import { getDeviceTier, prefersReducedMotion, rng } from "./env";
 import { beanMaterial, useNoirTextures } from "./materials";
@@ -12,7 +13,7 @@ import { sceneLayout } from "./layout";
 import { useInspectable } from "./inspect";
 import { grinderRig, hopperWorld } from "./craftRig";
 
-export const BEANS_GLB_URL = "/models/Coffee_Beans_NOIR.glb";
+export const BEANS_GLB_URL = assetPath("/models/Coffee_Beans_NOIR.glb");
 
 /**
  * Longest dimension a single imported kernel is normalised to, matching the

@@ -17,6 +17,7 @@ import {
   type ReactNode,
 } from "react";
 import * as THREE from "three";
+import { assetPath } from "@/lib/basePath";
 import { PALETTE } from "./env";
 
 /**
@@ -32,7 +33,7 @@ import { PALETTE } from "./env";
  * before use, so nothing here can leak state into the shared `useGLTF` cache.
  */
 
-export const CUP_GLB_URL = "/models/Cup_NOIR.glb";
+export const CUP_GLB_URL = assetPath("/models/Cup_NOIR.glb");
 
 export interface MaterialReport {
   name: string;
@@ -248,7 +249,7 @@ export function CupGlbLab() {
 
         <Suspense fallback={null}>
           <Environment
-            files="/hdri/studio_small_03_1k.hdr"
+            files={assetPath("/hdri/studio_small_03_1k.hdr")}
             background={false}
             environmentIntensity={0.7}
           />

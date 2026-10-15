@@ -5,6 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { scrollBus, scrollSmoothed } from "@/lib/scroll";
+import { assetPath } from "@/lib/basePath";
 import { useExperienceStore } from "@/store/experience";
 import { CoffeeBeans } from "./CoffeeBeans";
 import { CoffeeCup } from "./CoffeeCup";
@@ -138,7 +139,7 @@ export function Experience() {
         {/* A real (CC0) studio HDRI drives image-based reflections and soft
             ambience, so ceramic and brushed metal reflect a believable room. */}
         <Environment
-          files="/hdri/studio_small_03_1k.hdr"
+          files={assetPath("/hdri/studio_small_03_1k.hdr")}
           background={false}
           environmentIntensity={0.7}
           environmentRotation={[0, Math.PI * 0.12, 0]}

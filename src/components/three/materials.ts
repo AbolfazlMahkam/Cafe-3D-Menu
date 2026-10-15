@@ -3,6 +3,7 @@
 import { useTexture } from "@react-three/drei";
 import { useMemo } from "react";
 import * as THREE from "three";
+import { assetPath } from "@/lib/basePath";
 
 /**
  * All surface detail for the 3D layer comes from locally-stored, CC0 texture
@@ -23,16 +24,16 @@ export interface NoirTextures {
 }
 
 const SRC = {
-  steelColor: "/textures/steel/color.jpg",
-  steelNormal: "/textures/steel/normal.jpg",
-  steelRough: "/textures/steel/roughness.jpg",
-  darkColor: "/textures/darkmetal/color.jpg",
-  darkNormal: "/textures/darkmetal/normal.jpg",
-  darkRough: "/textures/darkmetal/roughness.jpg",
-  porcelainNormal: "/textures/porcelain/normal.jpg",
-  porcelainRough: "/textures/porcelain/roughness.jpg",
-  imperfectionColor: "/textures/imperfections/color.jpg",
-  imperfectionNormal: "/textures/imperfections/normal.jpg",
+  steelColor: assetPath("/textures/steel/color.jpg"),
+  steelNormal: assetPath("/textures/steel/normal.jpg"),
+  steelRough: assetPath("/textures/steel/roughness.jpg"),
+  darkColor: assetPath("/textures/darkmetal/color.jpg"),
+  darkNormal: assetPath("/textures/darkmetal/normal.jpg"),
+  darkRough: assetPath("/textures/darkmetal/roughness.jpg"),
+  porcelainNormal: assetPath("/textures/porcelain/normal.jpg"),
+  porcelainRough: assetPath("/textures/porcelain/roughness.jpg"),
+  imperfectionColor: assetPath("/textures/imperfections/color.jpg"),
+  imperfectionNormal: assetPath("/textures/imperfections/normal.jpg"),
 } as const;
 
 function configure(t: THREE.Texture, { srgb = false, repeat = 1 }: { srgb?: boolean; repeat?: number }) {

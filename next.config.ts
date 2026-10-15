@@ -1,14 +1,17 @@
 import type { NextConfig } from "next";
+import { BASE_PATH } from "./src/lib/basePath";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  // Static export for GitHub Pages.
   output: "export",
-  basePath: "/Cafe-3D-Menu",
-  assetPrefix: "/Cafe-3D-Menu/",
+  basePath: BASE_PATH,
+  assetPrefix: `${BASE_PATH}/`,
   images: {
     unoptimized: true,
   },
-  // PPR not supported with output: export
+  // PPR (cacheComponents) is incompatible with output: "export"
+  // ("Invariant: PPR cannot be enabled in export mode"), so both are off.
   // cacheComponents: true,
   // partialPrefetching: true,
   turbopack: {
