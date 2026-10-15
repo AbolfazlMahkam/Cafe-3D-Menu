@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+@theme {
+  --color-noir: #0b0b0b;
+  --color-char: #211a16;
+  --color-espresso: #16110e;
+  --color-accent: #b77a45;
+  --color-accent-soft: #d5a273;
+  --color-cream: #e8d9c6;
+  --color-cream-dim: #b9a892;
+
+  --font-display: var(--font-fraunces), var(--font-fa-display), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), var(--font-fa), ui-sans-serif, system-ui, sans-serif;
+
+  --tracking-label: 0.28em;
+}
+
+:root {
+  --grain-opacity: 0.05;
+}
+
+/* Persian (RTL): put the Arabic families first in the stack.
+   next/font's metric-fallback faces (`Inter Fallback`/`Fraunces Fallback`)
+   declare no unicode-range, so they greedily supply Arabic glyphs and would
+   shadow IBM Plex Sans Arabic / Noto Kufi. Leading with them in RTL keeps
+   Persian on the intended face while LTR (en) stays on Inter / Fraunces. */
+[dir="rtl"] {
+  --font-sans: var(--font-fa), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fa-display), var(--font-fraunces), ui-serif, Georgia, serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-noir);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-noir);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0b0b0b;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #35291f;
+    border-radius: 999px;
+    border: 2px solid #0b0b0b;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4a3828;
+  }
+}
+
+@layer components {
+  .label {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--color-accent-soft);
+  }
+
+  [dir="rtl"] .label {
+    letter-spacing: 0.12em;
+  }
+
+  .hairline {
+    border-color: color-mix(in oklab, var(--color-cream) 14%, transparent);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background: var(--color-accent);
+    color: #140d08;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    padding: 0.85rem 1.6rem;
+    border-radius: 999px;
+    transition:
+      background-color 0.3s ease,
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .btn-primary:hover {
+    background: var(--color-accent-soft);
+    box-shadow: 0 12px 40px -12px color-mix(in oklab, var(--color-accent) 70%, transparent);
+  }
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    border: 1px solid color-mix(in oklab, var(--color-cream) 22%, transparent);
+    color: var(--color-cream);
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    padding: 0.8rem 1.5rem;
+    border-radius: 999px;
+    transition:
+      border-color 0.3s ease,
+      background-color 0.3s ease;
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-accent);
+    background: color-mix(in oklab, var(--color-accent) 12%, transparent);
+  }
+}
+
+@layer utilities {
+  .grain {
+    position: fixed;
+    inset: -50%;
+    z-index: 60;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    mix-blend-mode: overlay;
+    will-change: transform;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-shadow-soft {
+    text-shadow: 0 2px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .edge-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 78%, transparent);
+    mask-image: linear-gradient(to bottom, black 78%, transparent);
+  }
+}
+
+@keyframes scrollcue {
+  0% {
+    transform: translateY(-100%);
+  }
+  60% {
+    transform: translateY(300%);
+  }
+  100% {
+    transform: translateY(300%);
+  }
+}
+
+@keyframes noir-load {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(340%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
