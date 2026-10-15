@@ -1,12 +1,13 @@
 import type { NextConfig } from "next";
-import { BASE_PATH } from "./src/lib/basePath";
+import { BASE_PATH, IS_PRODUCTION } from "./src/lib/basePath";
 
 const nextConfig: NextConfig = {
   /* config options here */
   // Static export for GitHub Pages.
   output: "export",
-  basePath: BASE_PATH,
-  assetPrefix: `${BASE_PATH}/`,
+  // Only the production export lives under the repository sub-path; the dev
+  // server stays at the origin root so http://localhost:3000 works.
+  basePath: IS_PRODUCTION ? BASE_PATH : undefined,
   images: {
     unoptimized: true,
   },

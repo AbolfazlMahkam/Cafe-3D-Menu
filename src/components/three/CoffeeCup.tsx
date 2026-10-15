@@ -28,8 +28,12 @@ import {
 
 const _outlet = new THREE.Vector3();
 
-/** Cup scale at the detached hero pose (dollied toward the camera). */
-const HERO_CUP_SCALE = 1.6;
+/**
+ * Cup scale at the detached hero pose (dollied toward the camera). Kept
+ * deliberately restrained so the hero shot reads as a premium still-life with
+ * generous negative space rather than a dramatic zoom.
+ */
+const HERO_CUP_SCALE = 1.2;
 
 const DRINK_LOOK: Record<string, { liquid: string; crema: string; cremaAmount: number }> = {
   espresso: { liquid: "#2a1408", crema: "#b07a3f", cremaAmount: 0.85 },

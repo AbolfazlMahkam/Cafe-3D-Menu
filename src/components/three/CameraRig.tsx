@@ -24,7 +24,7 @@ const KEY_DESKTOP: Record<KeyName, Key> = {
   prep: { p: new THREE.Vector3(0.1, 0.55, 4.0), l: new THREE.Vector3(-0.4, -0.05, 0.32) },
   lock: { p: new THREE.Vector3(0.6, 0.95, 4.1), l: new THREE.Vector3(-0.95, 0.46, 0.22) },
   extract: { p: new THREE.Vector3(0.5, 0.75, 4.2), l: new THREE.Vector3(-0.9, 0.28, 0.28) },
-  cupHero: { p: new THREE.Vector3(0.15, 0.3, 4.9), l: new THREE.Vector3(0.05, -0.02, 0.9) },
+  cupHero: { p: new THREE.Vector3(0.15, 0.3, 5.15), l: new THREE.Vector3(-0.22, 0.08, 0.8) },
   signature: { p: new THREE.Vector3(0.28, 0.5, 5.5), l: new THREE.Vector3(0.42, 0.05, 0.2) },
 };
 
@@ -37,7 +37,7 @@ const KEY_MOBILE: Record<KeyName, Key> = {
   prep: { p: new THREE.Vector3(0, 0.72, 6.0), l: new THREE.Vector3(0, 0.08, 0.25) },
   lock: { p: new THREE.Vector3(0, 1.2, 6.4), l: new THREE.Vector3(0, 0.5, 0.15) },
   extract: { p: new THREE.Vector3(0, 0.92, 6.2), l: new THREE.Vector3(0, 0.32, 0.2) },
-  cupHero: { p: new THREE.Vector3(0, 0.52, 6.0), l: new THREE.Vector3(0, 0.16, 0.9) },
+  cupHero: { p: new THREE.Vector3(0, 0.52, 6.2), l: new THREE.Vector3(0, 0.58, 0.9) },
   signature: { p: new THREE.Vector3(0, 0.5, 6.6), l: new THREE.Vector3(0, 0.45, 0.1) },
 };
 
