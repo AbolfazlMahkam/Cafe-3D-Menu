@@ -56,11 +56,10 @@ export function machineRig(seat: number, pointerX: number, out: MachineRig = _ri
   // slide it to the centre and damp the pointer drift accordingly.
   const portrait = sceneLayout.portrait;
   const parallax = 1 - portrait * 0.55;
-  out.position.set(
-    BASE.x + 0.6 * portrait + pointerX * 0.045 * parallax,
-    BASE.y + seat * SEAT_RISE,
-    BASE.z,
-  );
+  // Mirror the static lane for RTL; leave the pointer drift unmirrored so the
+  // parallax matches the camera in both directions.
+  const x = (BASE.x + 0.6 * portrait) * sceneLayout.mirror;
+  out.position.set(x + pointerX * 0.045 * parallax, BASE.y + seat * SEAT_RISE, BASE.z);
   out.rotationY = YAW_BASE + (1 - seat) * YAW_ENTER + pointerX * 0.05 * parallax;
   out.scale = SCALE_BASE + seat * SCALE_RANGE;
   return out;

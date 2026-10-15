@@ -4,6 +4,7 @@ import { useTexture } from "@react-three/drei";
 import { useMemo } from "react";
 import * as THREE from "three";
 import { assetPath } from "@/lib/basePath";
+import { getDeviceTier } from "./env";
 
 /**
  * All surface detail for the 3D layer comes from locally-stored, CC0 texture
@@ -36,12 +37,15 @@ const SRC = {
   imperfectionNormal: assetPath("/textures/imperfections/normal.jpg"),
 } as const;
 
-function configure(t: THREE.Texture, { srgb = false, repeat = 1 }: { srgb?: boolean; repeat?: number }) {
+function configure(
+  t: THREE.Texture,
+  { srgb = false, repeat = 1, anisotropy = 8 }: { srgb?: boolean; repeat?: number; anisotropy?: number },
+) {
   t.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
   t.wrapS = THREE.RepeatWrapping;
   t.wrapT = THREE.RepeatWrapping;
   t.repeat.set(repeat, repeat);
-  t.anisotropy = 8;
+  t.anisotropy = anisotropy;
   t.needsUpdate = true;
   return t;
 }
@@ -49,16 +53,20 @@ function configure(t: THREE.Texture, { srgb = false, repeat = 1 }: { srgb?: bool
 export function useNoirTextures(): NoirTextures {
   const maps = useTexture(SRC) as unknown as Record<keyof typeof SRC, THREE.Texture>;
   return useMemo(() => {
-    configure(maps.steelColor, { srgb: true, repeat: 1 });
-    configure(maps.steelNormal, { repeat: 1 });
-    configure(maps.steelRough, { repeat: 1 });
-    configure(maps.darkColor, { srgb: true, repeat: 1.5 });
-    configure(maps.darkNormal, { repeat: 1.5 });
-    configure(maps.darkRough, { repeat: 1.5 });
-    configure(maps.porcelainNormal, { repeat: 2 });
-    configure(maps.porcelainRough, { repeat: 2 });
-    configure(maps.imperfectionColor, { srgb: true, repeat: 1.6 });
-    configure(maps.imperfectionNormal, { repeat: 2.4 });
+    // Anisotropic filtering is a real per-fragment cost on phone GPUs; halve it
+    // there, where the surfaces are looked at from farther away anyway.
+    const aniso = getDeviceTier().mobile ? 4 : 8;
+    const o = { anisotropy: aniso };
+    configure(maps.steelColor, { srgb: true, repeat: 1, ...o });
+    configure(maps.steelNormal, { repeat: 1, ...o });
+    configure(maps.steelRough, { repeat: 1, ...o });
+    configure(maps.darkColor, { srgb: true, repeat: 1.5, ...o });
+    configure(maps.darkNormal, { repeat: 1.5, ...o });
+    configure(maps.darkRough, { repeat: 1.5, ...o });
+    configure(maps.porcelainNormal, { repeat: 2, ...o });
+    configure(maps.porcelainRough, { repeat: 2, ...o });
+    configure(maps.imperfectionColor, { srgb: true, repeat: 1.6, ...o });
+    configure(maps.imperfectionNormal, { repeat: 2.4, ...o });
     return maps as unknown as NoirTextures;
   }, [maps]);
 }

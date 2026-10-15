@@ -37,9 +37,17 @@ const KEY_MOBILE: Record<KeyName, Key> = {
   prep: { p: new THREE.Vector3(0, 0.72, 6.0), l: new THREE.Vector3(0, 0.08, 0.25) },
   lock: { p: new THREE.Vector3(0, 1.2, 6.4), l: new THREE.Vector3(0, 0.5, 0.15) },
   extract: { p: new THREE.Vector3(0, 0.92, 6.2), l: new THREE.Vector3(0, 0.32, 0.2) },
-  cupHero: { p: new THREE.Vector3(0, 0.52, 6.2), l: new THREE.Vector3(0, 0.58, 0.9) },
+  cupHero: { p: new THREE.Vector3(0, 0.52, 6.2), l: new THREE.Vector3(0, 0.44, 0.9) },
   signature: { p: new THREE.Vector3(0, 0.5, 6.6), l: new THREE.Vector3(0, 0.45, 0.1) },
 };
+
+/**
+ * Extra upward bias applied to the mobile look target on top of the mobile
+ * keys. Aiming higher tips the view down, settling every beat's subject into
+ * the lower half of a phone frame with the story copy clear above it. Applied
+ * uniformly so all stages shift together.
+ */
+const MOBILE_LOOK_LIFT = 0.14;
 
 const NAMES: KeyName[] = ["beans", "grind", "prep", "lock", "extract", "cupHero", "signature"];
 
@@ -81,12 +89,19 @@ export function CameraRig() {
     };
 
     const portrait = sceneLayout.portrait;
+    const mirror = sceneLayout.mirror;
     for (const name of NAMES) {
       const d = blended[name];
       const a = KEY_DESKTOP[name];
       const b = KEY_MOBILE[name];
       d.p.copy(a.p).lerp(b.p, portrait);
       d.l.copy(a.l).lerp(b.l, portrait);
+      // Mirror the static composition across the vertical centre line for RTL,
+      // and drop the subject lower on phones. Pointer parallax is added after
+      // this, unmirrored, so the interaction feels identical in both languages.
+      d.p.x *= mirror;
+      d.l.x *= mirror;
+      d.l.y += MOBILE_LOOK_LIFT * portrait;
     }
 
     let sum = 0;

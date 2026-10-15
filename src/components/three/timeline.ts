@@ -74,11 +74,32 @@ export interface Timeline {
   global: number;
 }
 
+/**
+ * Memoised timeline. Every 3D component samples the same curves in its own
+ * `useFrame`, and all of them read the identical smoothed scroll values within
+ * a frame — so caching on those inputs collapses a handful of identical
+ * computations and per-frame object allocations down to one, with no call-site
+ * changes. The returned object is shared and read immediately, never retained.
+ */
+let _cache: Timeline | null = null;
+let _cacheStory = NaN;
+let _cacheSignature = NaN;
+let _cacheMenu = NaN;
+
 export function computeTimeline(
   story: number,
   signature: number,
   menuReveal: number,
 ): Timeline {
+  if (
+    _cache &&
+    story === _cacheStory &&
+    signature === _cacheSignature &&
+    menuReveal === _cacheMenu
+  ) {
+    return _cache;
+  }
+
   // Camera beat pulses: rising × falling smoothsteps, overlapping so the
   // weighted camera blend always has a neighbouring pair to crossfade.
   const beans = 1 - smoothstep(0.1, 0.22, story);
@@ -126,7 +147,10 @@ export function computeTimeline(
   const sig = smoothstep(0.04, 0.3, signature) * (1 - smoothstep(0.78, 1, signature));
   const global = 1 - menuReveal;
 
-  return {
+  _cacheStory = story;
+  _cacheSignature = signature;
+  _cacheMenu = menuReveal;
+  _cache = {
     beans,
     grind,
     prep,
@@ -154,6 +178,7 @@ export function computeTimeline(
     signature: sig,
     global,
   };
+  return _cache;
 }
 
 /** Eases a value toward a target with frame-rate independent damping. */

@@ -16,6 +16,7 @@ import { Grinder } from "./Grinder";
 import { Portafilter } from "./Portafilter";
 import { Inspector } from "./Inspector";
 import { ScrollSmoothing } from "./ScrollSmoothing";
+import { sceneControl } from "./layout";
 import { PALETTE, getDeviceTier, prefersReducedMotion } from "./env";
 
 function Ready() {
@@ -41,6 +42,22 @@ function ContextGuard() {
     canvas.addEventListener("webglcontextlost", onLost, false);
     return () => canvas.removeEventListener("webglcontextlost", onLost, false);
   }, [gl, setWebglFailed]);
+  return null;
+}
+
+/**
+ * Publishes the renderer's `invalidate` to the layout module so a change made
+ * outside the frame loop (a locale switch flipping the composition mirror) can
+ * request a single repaint under `frameloop="demand"`.
+ */
+function SceneControlBridge() {
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    sceneControl.invalidate = invalidate;
+    return () => {
+      sceneControl.invalidate = () => {};
+    };
+  }, [invalidate]);
   return null;
 }
 
@@ -123,6 +140,10 @@ export function Experience() {
         // The cup's rising coffee level is faked with a world-space clipping
         // plane on the coffee material.
         gl.localClippingEnabled = true;
+        // The glass cup renders the scene through a transmission buffer every
+        // frame; on phones that pass dominates the frame cost, so render it at
+        // half resolution. The glass is soft anyway, so the loss is invisible.
+        if (tier.mobile) gl.transmissionResolutionScale = 0.5;
         gl.domElement.style.pointerEvents = "none";
         gl.domElement.style.transition = "opacity 160ms linear";
       }}
@@ -168,6 +189,7 @@ export function Experience() {
 
       <CameraRig />
       <ContextGuard />
+      <SceneControlBridge />
       <Inspector />
       <FrameDriver reduced={reduced} />
     </Canvas>

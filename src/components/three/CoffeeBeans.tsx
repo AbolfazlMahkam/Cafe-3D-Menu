@@ -163,7 +163,7 @@ export function CoffeeBeans() {
     g.visible = p > 0.02;
     g.scale.setScalar((0.55 + p * 0.45) * fit);
     g.position.set(
-      0.15 - 0.15 * portrait,
+      (0.15 - 0.15 * portrait) * sceneLayout.mirror,
       -0.9 + p * 0.05 + portrait * 1.15,
       -0.4 * (1 - p),
     );

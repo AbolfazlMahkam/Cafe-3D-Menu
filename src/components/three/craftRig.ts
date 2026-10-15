@@ -47,7 +47,7 @@ const _grinderRig: GrinderRig = { position: new THREE.Vector3(), scale: 1, rotat
 export function grinderRig(out: GrinderRig = _grinderRig): GrinderRig {
   const portrait = sceneLayout.portrait;
   out.position.set(
-    GRINDER_X - GRINDER_X * portrait,
+    (GRINDER_X - GRINDER_X * portrait) * sceneLayout.mirror,
     GROUND_Y,
     GRINDER_Z + portrait * 0.1,
   );
@@ -108,7 +108,11 @@ export function portafilterPose(
   const rig: MachineRig = machineRig(seat, pointerX, _pfRig);
   groupHeadWorld(rig, _groupHead);
 
-  _prep.set(PREP_X - PREP_X * portrait, PREP_Y, PREP_Z - portrait * 0.08);
+  _prep.set(
+    (PREP_X - PREP_X * portrait) * sceneLayout.mirror,
+    PREP_Y,
+    PREP_Z - portrait * 0.08,
+  );
 
   out.position.copy(_prep).lerp(_groupHead, locked);
   const prepYaw = -0.25 + portrait * 0.25;

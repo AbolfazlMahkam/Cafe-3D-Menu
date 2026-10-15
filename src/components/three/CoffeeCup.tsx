@@ -175,11 +175,12 @@ export function CoffeeCup() {
     // On a narrow portrait stage the hero / signature cup is pulled in from the
     // right-hand lane to sit centred (and clear of the copy column).
     const portrait = sceneLayout.portrait;
+    const mirror = sceneLayout.mirror;
     const parallax = 1 - portrait * 0.55;
-    HERO_POSE.x = 0.1 - 0.1 * portrait;
+    HERO_POSE.x = (0.1 - 0.1 * portrait) * mirror;
     HERO_POSE.y = -0.02 + portrait * 0.04;
     HERO_POSE.z = 1.45 - portrait * 0.1;
-    SIG_POSE.x = 0.62 - 0.56 * portrait;
+    SIG_POSE.x = (0.62 - 0.56 * portrait) * mirror;
 
     // While the machine is being inspected, the docked cup rides along with it.
     const machineOffset = inspect.entries.get("machine")?.current;

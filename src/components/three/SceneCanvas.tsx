@@ -2,8 +2,9 @@
 
 import dynamic from "next/dynamic";
 import { Component, type ReactNode, useEffect, useSyncExternalStore } from "react";
+import { useI18n } from "@/lib/i18n/provider";
 import { useExperienceStore } from "@/store/experience";
-import { updateSceneLayout } from "./layout";
+import { setSceneMirror, updateSceneLayout } from "./layout";
 
 const noop = () => () => {};
 
@@ -61,6 +62,7 @@ function webglAvailable(): boolean {
  */
 export function SceneCanvas() {
   const isClient = useIsClient();
+  const { dir } = useI18n();
   const webglFailed = useExperienceStore((s) => s.webglFailed);
   const setWebglFailed = useExperienceStore((s) => s.setWebglFailed);
   const setReady = useExperienceStore((s) => s.setReady);
@@ -77,6 +79,12 @@ export function SceneCanvas() {
       window.removeEventListener("orientationchange", onResize);
     };
   }, []);
+
+  // Flip the whole composition when the text direction changes so the subject
+  // always reads on the side opposite the copy column.
+  useEffect(() => {
+    setSceneMirror(dir);
+  }, [dir]);
 
   useEffect(() => {
     if (!webglAvailable()) setWebglFailed(true);
